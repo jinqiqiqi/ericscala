@@ -17,3 +17,8 @@ case object DispatcherActor extends Actors {
   val name = "DISPATCHER"
   val actorName = "Dispatcher"
 }
+
+case object UserActor extends Actors {
+  val name = "USER"
+  val actorName = "UserManager"
+}
