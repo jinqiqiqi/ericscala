@@ -1,17 +1,20 @@
 package com.eric.http
 
 import akka.actor.ActorSystem
+import akka.pattern.ask
 import akka.util.Timeout
-import com.eric.DispatcherActor
+
+import spray.http.StatusCodes
+import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling.ToResponseMarshallable
 import spray.json.RootJsonFormat
 import spray.routing.Route
 import spray.routing.Directives._
-import akka.pattern.ask
 
 import scala.concurrent.ExecutionContext
 import scala.reflect.ClassTag
-import spray.http.StatusCodes
+
+import com.eric.DispatcherActor
 import com.eric.common._
 
 /**
@@ -23,11 +26,11 @@ trait Endpoints {
   def routes(system: ActorSystem)(implicit timeout:Timeout, ec: ExecutionContext): Route = {
     val dispatcher = system.actorSelection(DispatcherActor.actorPath)
 
-//    def blocking[T: RootJsonFormat: ClassTag](req: Request): Route =
-//      complete(dispatcher.ask(req).map[ToResponseMarshallable] {
-//        case err: Failed => (StatusCodes.BadRequest, err)
-//        case response: T => response
-//      })
+    def blocking[T: RootJsonFormat: ClassTag](req: Request): Route =
+      complete(dispatcher.ask(req).map[ToResponseMarshallable] {
+        case err: Failed => (StatusCodes.BadRequest, err)
+        case response: T => response
+      })
 
     def nonblocking(req: Request): Route = {
       dispatcher ! req

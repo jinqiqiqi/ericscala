@@ -1,9 +1,5 @@
 package com.eric
 
-/**
-  * Created by kinch on 12/20/16.
-  */
-
 sealed trait Actors {
   def name: String
   def actorName: String
