@@ -17,9 +17,6 @@ class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
   implicit val qm = QueryActorWrapper(context.system.actorSelection(DatabaseActor.actorPath))
   implicit val cm = CacheActorWrapper(context.system.actorSelection(CacheActor.actorPath))
 
-
-
-
   val userModel = UserModel()
 
   def receive = {
