@@ -2,7 +2,9 @@ package com.eric
 
 import akka.actor.{ExtendedActorSystem, Extension, ExtensionKey}
 import akka.routing.FromConfig
+import akka.util.Timeout
 import com.eric.impl.UserManager
+import scala.concurrent.duration.DurationInt
 
 /**
   * Created by kinch on 12/20/16.
@@ -11,8 +13,10 @@ import com.eric.impl.UserManager
 class EricExt(system: ExtendedActorSystem) extends Extension {
 
   val config = system.settings.config.getConfig("eric.service")
+  implicit val timeout = Timeout(config.getInt("asyncTimeout").seconds)
+  private val batchSize = config.getInt("batchSize")
 
-  system.actorOf(FromConfig.props(UserManager.props), UserActor.actorName)
+  system.actorOf(FromConfig.props(UserManager.props(batchSize)), UserActor.actorName)
 }
 object Eric extends ExtensionKey[EricExt]{
 

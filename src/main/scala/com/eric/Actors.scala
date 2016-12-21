@@ -22,3 +22,14 @@ case object UserActor extends Actors {
   val name = "USER"
   val actorName = "UserManager"
 }
+
+case object DatabaseActor extends Actors {
+  val name ="DATABASE"
+  val actorName = "DBRouter"
+}
+
+case object CacheActor extends Actors {
+  val name = "CACHE"
+  val actorName = "CacheManager"
+}
+

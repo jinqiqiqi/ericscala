@@ -25,7 +25,8 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-remote" % akkaVersion,
     "io.spray" %% "spray-can" % sprayVersion,
     "io.spray" %% "spray-routing" % sprayVersion,
-    "io.spray" %% "spray-json" % sprayVersion
+    "io.spray" %% "spray-json" % sprayVersion,
+    "mysql" % "mysql-connector-java" % "5.1.37"
   )
 }
 

@@ -11,7 +11,6 @@ import akka.pattern.ask
 
 import scala.concurrent.ExecutionContext
 import scala.reflect.ClassTag
-import com.eric.common._
 import spray.http.StatusCodes
 import com.eric.common._
 
@@ -35,7 +34,7 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
-      path("user")(parameters('uid.as[Int]? 1).as(GetUser)(p => nonblocking[User](p)))
+      path("user")(parameters('uid.as[Int]? 1).as(GetUser)(p => nonblocking(p)))
     }
   }
 
