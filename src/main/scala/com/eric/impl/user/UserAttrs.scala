@@ -16,9 +16,6 @@ case class UserAttrs(implicit qm: QueryActorWrapper, cm: CacheActorWrapper, ec: 
     val sql = "select * from users"
     val cols = Seq((Attr.USER, Datatype.LONG_TYPE), (Attr.DISPLAYNAME, Datatype.STRING_TYPE))
     val binds = Seq.empty
-    QueryOps.query(sql, cols, binds)(vss => Future.successful(ValueList(vss))).map {
-      case err: Failed => Left(err)
-      case ValueList(x) => x.map(u => (u(Attr.USER)))
-    }
+    QueryOps.query(sql, cols, binds)(vss => Future.successful(ValueList(vss)))
   }
 }

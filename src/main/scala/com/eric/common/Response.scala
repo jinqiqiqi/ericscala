@@ -6,6 +6,5 @@ package com.eric.common
 trait Response
 
 case class Failed(code: Int, msg: String) extends Response
-
 case class User(uid: Long, nickname: String) extends Response
 case class ValueList(vs: Seq[Map[String, String]]) extends Response

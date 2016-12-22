@@ -3,7 +3,11 @@ package com.eric.common
 /**
   * Created by kinch on 12/21/16.
   */
-class Constants {
+object Constants {
+
+  object Attr {
+    val ID = "ID"
+  }
 
 }
 

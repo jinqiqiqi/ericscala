@@ -16,7 +16,6 @@ import scala.concurrent.Future
 
 class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
 
-
   import context.dispatcher
 
   implicit val qm = QueryActorWrapper(context.system.actorSelection(QueryActor.actorPath))
