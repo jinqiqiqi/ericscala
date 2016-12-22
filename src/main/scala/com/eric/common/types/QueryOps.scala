@@ -12,8 +12,11 @@ case object QueryOps {
            (fn: Seq[Map[String, String]] => Future[Response])
            (implicit ec: ExecutionContext, to: Timeout, qm: QueryActorWrapper): Future[Response] = {
     (qm.actor ? Query(sql, cols, binds, start, range)).flatMap {
-      case err: Failed => Future.successful(err)
-      case ValueList(vss) => fn(vss)
+      case err: Failed =>
+        Future.successful(err)
+      case ValueList(vss) =>
+        println(vss)
+        fn(vss)
     }
   }
 

@@ -9,6 +9,8 @@ import com.eric.http.EricListener
 import com.typesafe.config.ConfigFactory
 import spray.can.Http
 
+
+
 object EricMain extends App {
 
   val config = ConfigFactory.load().getConfig("eric.service")
