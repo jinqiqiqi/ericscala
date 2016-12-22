@@ -29,3 +29,7 @@ case object CacheActor extends Actors {
   val actorName = "CacheManager"
 }
 
+case object QueryActor extends Actors {
+  val name = "QUERY"
+  val actorName = "QueryManager"
+}
