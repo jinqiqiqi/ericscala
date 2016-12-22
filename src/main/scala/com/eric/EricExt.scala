@@ -25,6 +25,4 @@ class EricExt(system: ExtendedActorSystem) extends Extension {
   system.actorOf(Dispatcher.props, DispatcherActor.actorName)
   system.actorOf(FromConfig.props(UserManager.props(batchSize)), UserActor.actorName)
 }
-object Eric extends ExtensionKey[EricExt]{
-
-}
+object Eric extends ExtensionKey[EricExt]
