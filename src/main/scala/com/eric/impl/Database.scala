@@ -3,7 +3,7 @@ package com.eric.impl
 import javax.sql.DataSource
 
 import akka.actor.Actor
-import com.eric.common.{BindValue, Query, ValueList}
+import com.eric.common.{BindValue, Query, ValueLists}
 import com.eric.db.{DBUtil, Transaction}
 
 /**
@@ -17,7 +17,7 @@ class Database(fs: Int)(implicit ds: DataSource) extends Actor with Transaction 
     query { conn =>
       val offset = if (start > 0) s"offset $start" else ""
       val limit  = if (range > 0) s"limit $range" else ""
-      ValueList(DBUtil(conn).select(s"$sql $limit $offset", cols, binds))
+      ValueLists(DBUtil(conn).select(s"$sql $limit $offset", cols, binds))
 
     }
 

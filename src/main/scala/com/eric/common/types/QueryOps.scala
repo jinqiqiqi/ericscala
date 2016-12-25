@@ -14,7 +14,7 @@ case object QueryOps {
     (qm.actor ? Query(sql, cols, binds, start, range)).flatMap {
       case err: Failed =>
         Future.successful(err)
-      case ValueList(vss) =>
+      case ValueLists(vss) =>
         println(vss)
         fn(vss)
     }
