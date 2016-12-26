@@ -21,14 +21,14 @@ class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
   implicit val qm = QueryActorWrapper(context.system.actorSelection(QueryActor.actorPath))
   implicit val cm = CacheActorWrapper(context.system.actorSelection(CacheActor.actorPath))
 
-  val userModel = UserAttrs()
+  val userAttrs = UserAttrs()
 
   def receive = {
     case GetUser(uid) => getUser(uid).pipeTo(sender())
   }
 
   def getUser(uid: Long): Future[Response] = {
-    userModel.profile(uid)
+    userAttrs.profile(uid)
   }
 
 

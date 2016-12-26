@@ -11,7 +11,7 @@ object Actors {
 
 case object DispatcherActor extends Actors {
   val name = "DISPATCHER"
-  val actorName = "Dispatcher"
+  val actorName = "DispatcherManager"
 }
 
 case object UserActor extends Actors {
@@ -21,7 +21,7 @@ case object UserActor extends Actors {
 
 case object DatabaseActor extends Actors {
   val name ="DATABASE"
-  val actorName = "DBRouter"
+  val actorName = "DatabaseManager"
 }
 
 case object CacheActor extends Actors {

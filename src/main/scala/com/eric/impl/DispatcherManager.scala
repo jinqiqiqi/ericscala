@@ -8,16 +8,17 @@ import com.eric.common._
  * Created by kinch on 12/20/16.
  */
 
-case class Dispatcher() extends Actor {
+case class DispatcherManager() extends Actor {
   val userManager = context.system.actorSelection(UserActor.actorPath)
   val cacheManager = context.system.actorSelection(CacheActor.actorPath)
 
   def receive = {
-    case msg: GetUser => userManager.forward(msg)
+    case msg: GetUser =>
+      userManager.forward(msg)
   }
 }
 
-object Dispatcher {
+object DispatcherManager {
 
-  def props = Props { new Dispatcher() }
+  def props = Props { new DispatcherManager() }
 }

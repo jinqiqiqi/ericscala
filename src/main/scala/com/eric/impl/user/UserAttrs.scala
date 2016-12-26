@@ -1,8 +1,8 @@
 package com.eric.impl.user
 
 import akka.util.Timeout
-import com.eric.common._
 import com.eric.commom.QueryOps
+import com.eric.common._
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -37,7 +37,7 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
-      path("user")(parameters('uid.as[Int]? 1).as(GetUser)(p => nonblocking(p)))
+      path("user")(parameters('uid.as[Int]? 1).as(GetUser)(p =>nonblocking(p)))
     }
   }
 

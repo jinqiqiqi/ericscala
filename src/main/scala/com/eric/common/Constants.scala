@@ -11,7 +11,6 @@ object Constants {
 
 }
 
-
 object Attr {
   val USER = "USER"
   val DISPLAYNAME = "DISPLAYNAME"

@@ -2,7 +2,7 @@ package com.eric.impl
 
 import javax.sql.DataSource
 
-import akka.actor.Actor
+import akka.actor.{Actor, Props}
 import com.eric.common.{BindValue, Query, ValueLists}
 import com.eric.db.{DBUtil, Transaction}
 
@@ -11,7 +11,7 @@ import com.eric.db.{DBUtil, Transaction}
   */
 
 
-class Database(fs: Int)(implicit ds: DataSource) extends Actor with Transaction {
+class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Transaction {
 
   private def select(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], start: Int, range: Int): Any =
     query { conn =>
@@ -25,5 +25,8 @@ class Database(fs: Int)(implicit ds: DataSource) extends Actor with Transaction 
     case Query(sql, cols, binds, start, range) => sender ! select(sql, cols, binds, start, range)
   }
 
+}
 
+object DatabaseManager {
+  def props(fetchSize: Int)(implicit ds: DataSource) = Props{ new DatabaseManager(fetchSize) }
 }
