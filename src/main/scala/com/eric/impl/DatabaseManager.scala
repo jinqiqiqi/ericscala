@@ -16,7 +16,6 @@ class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Trans
     query { conn =>
       val offset = if (start > 0) s"offset $start" else ""
       val limit  = if (range > 0) s"limit $range" else ""
-      println(s">> connection is: $conn")
       ValueLists(DBUtil(conn).select(s"$sql $limit $offset", cols, binds))
       
 
@@ -25,7 +24,6 @@ class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Trans
   def receive = {
     case Query(sql, cols, binds, start, range) =>
       val msg = select(sql, cols, binds, start, range)
-      println(s">> msg is: $msg")
       sender ! msg
   }
 

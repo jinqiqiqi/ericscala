@@ -13,11 +13,9 @@ import scala.concurrent.{ExecutionContext, Future}
 case class UserAttrs(implicit qm: QueryActorWrapper, cm: CacheActorWrapper, ec: ExecutionContext, to: Timeout) {
 
   def profile(uid: Long) = {
-    val sql = "select * from users"
-    val cols = Seq((Attr.USER, Datatype.LONG_TYPE), (Attr.DISPLAYNAME, Datatype.STRING_TYPE))
+    val sql = "select id, username, password, age, province from user"
+    val cols = Seq((Attr.ID, Datatype.LONG_TYPE), (Attr.USERNAME, Datatype.STRING_TYPE), (Attr.PASSWORD, Datatype.STRING_TYPE), (Attr.AGE, Datatype.INT_TYPE), (Attr.PROVINCE, Datatype.STRING_TYPE))
     val binds = Seq.empty
-    QueryOps.query(sql, cols, binds)(vss =>
-      Future.successful(ValueLists(vss))
-    )
+    QueryOps.query(sql, cols, binds)(vss => Future.successful(ValueLists(vss)))
   }
 }

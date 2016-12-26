@@ -10,9 +10,6 @@ import com.eric.common._
 import com.eric.impl.user.UserAttrs
 
 import scala.concurrent.Future
-/**
-  * Created by kinch on 12/20/16.
-  */
 
 class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
 

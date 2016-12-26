@@ -13,8 +13,7 @@ case class DispatcherManager() extends Actor {
   val cacheManager = context.system.actorSelection(CacheActor.actorPath)
 
   def receive = {
-    case msg: GetUser =>
-      userManager.forward(msg)
+    case msg: GetUser => userManager.forward(msg)
   }
 }
 

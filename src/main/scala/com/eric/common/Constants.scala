@@ -12,6 +12,9 @@ object Constants {
 }
 
 object Attr {
-  val USER = "USER"
-  val DISPLAYNAME = "DISPLAYNAME"
+  val ID = "ID"
+  val USERNAME = "USERNAME"
+  val PASSWORD = "PASSWORD"
+  val AGE = "AGE"
+  val PROVINCE = "PROVINCE"
 }
