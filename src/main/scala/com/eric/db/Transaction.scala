@@ -15,7 +15,9 @@ trait Transaction {
 
   def connection(fn: Connection => Response)(implicit ds: DataSource) =
     try {
-
+      val conn = ds.getConnection()
+      try fn(conn)
+      finally conn.close()
     }
     catch {
       case NonFatal(e) => report(DatabaseCallError, e.getMessage)

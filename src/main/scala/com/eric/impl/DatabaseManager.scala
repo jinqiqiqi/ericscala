@@ -1,10 +1,9 @@
 package com.eric.impl
 
-import javax.sql.DataSource
-
 import akka.actor.{Actor, Props}
-import com.eric.common.{BindValue, Query, ValueLists}
-import com.eric.db.{DBUtil, Transaction}
+import com.eric.common._
+import com.eric.db._
+import javax.sql.DataSource
 
 /**
   * Created by kinch on 12/21/16.
@@ -17,12 +16,17 @@ class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Trans
     query { conn =>
       val offset = if (start > 0) s"offset $start" else ""
       val limit  = if (range > 0) s"limit $range" else ""
+      println(s">> connection is: $conn")
       ValueLists(DBUtil(conn).select(s"$sql $limit $offset", cols, binds))
+      
 
     }
 
   def receive = {
-    case Query(sql, cols, binds, start, range) => sender ! select(sql, cols, binds, start, range)
+    case Query(sql, cols, binds, start, range) =>
+      val msg = select(sql, cols, binds, start, range)
+      println(s">> msg is: $msg")
+      sender ! msg
   }
 
 }

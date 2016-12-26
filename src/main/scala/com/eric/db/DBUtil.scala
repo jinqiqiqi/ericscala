@@ -70,6 +70,7 @@ case class DBUtil(c: Connection) extends DateUtil {
   }
 
   def select(sql: String, slist: Seq[(String, Int)], binds: Seq[BindValue]): List[Map[String, String]] = clock(sql) {
+    println(s">>> sql is: $sql")
     statement(sql) { stmt =>
       bind(stmt, binds)
       fetchRows(stmt, slist)
