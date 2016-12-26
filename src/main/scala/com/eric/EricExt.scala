@@ -1,13 +1,12 @@
 package com.eric
 
+import scala.concurrent.duration.DurationInt
+
 import akka.actor.{ExtendedActorSystem, Extension, ExtensionKey}
 import akka.routing.FromConfig
 import akka.util.Timeout
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-
-import scala.concurrent.duration.DurationInt
-
 import com.eric.impl._
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 /**

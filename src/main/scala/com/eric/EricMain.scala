@@ -26,3 +26,4 @@ object EricMain extends App {
   IO(Http) ! Http.Bind(listener = api, interface = host, port = port)
 
 }
+
