@@ -10,9 +10,10 @@ import com.eric.common._
 
 case class DispatcherManager() extends Actor {
   val userManager = context.system.actorSelection(UserActor.actorPath)
-  val cacheManager = context.system.actorSelection(CacheActor.actorPath)
+//  val cacheManager = context.system.actorSelection(CacheActor.actorPath)
 
   def receive = {
+    // user related messages
     case msg: GetUser => userManager.forward(msg)
   }
 }

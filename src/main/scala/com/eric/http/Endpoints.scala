@@ -16,12 +16,12 @@ import spray.routing.Directives._
 import spray.routing.Route
 
 /**
-  * Created by kinch on 12/20/16.
-  */
+ * Created by kinch on 12/20/16.
+ */
 trait Endpoints {
-  import com.eric.common.Serialize._
+  import Serialize._
 
-  def routes(system: ActorSystem)(implicit timeout:Timeout, ec: ExecutionContext): Route = {
+  def routes(system: ActorSystem)(implicit timeout: Timeout, ec: ExecutionContext): Route = {
     val dispatcher = system.actorSelection(DispatcherActor.actorPath)
 
     def blocking[T: RootJsonFormat: ClassTag](req: Request): Route =
@@ -35,7 +35,7 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
-      path("user")(parameters('uid.as[Int]? 1).as(GetUser)(p =>blocking[ValueLists](p)))
+      path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[ValueLists](p)))
     }
   }
 

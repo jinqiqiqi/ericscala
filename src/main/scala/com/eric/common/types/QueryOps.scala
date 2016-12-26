@@ -12,8 +12,7 @@ case object QueryOps {
            (fn: Seq[Map[String, String]] => Future[Response])
            (implicit ec: ExecutionContext, to: Timeout, qm: QueryActorWrapper): Future[Response] = {
     (qm.actor ? Query(sql, cols, binds, start, range)).flatMap {
-      case err: Failed =>
-        Future.successful(err)
+      case err: Failed => Future.successful(err)
       case ValueLists(vss) => fn(vss)
     }
   }
@@ -28,7 +27,7 @@ case object QueryOps {
       }
     }.unzip
 
-    val wclause = if (where.isEmpty) "" else s" where $where"
+    val wclause: String = if (where.isEmpty) "" else s" where $where"
     query(s"select ${cols.mkString(",")} from ${t.dbTable} $wclause", attrs, binds, start, range)(fn)
   }
 }
