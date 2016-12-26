@@ -32,7 +32,7 @@ case class RedisCache(rp: RedisClientPool) extends CacheServer {
     case _ => rp.withClient { r => r.setex(k, exp, v) }
   }
 
-  def incr(k: String, by: Int): Int = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
+  def incr(k: String, by: Int) = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
 
 
 }
