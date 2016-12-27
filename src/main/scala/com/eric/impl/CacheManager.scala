@@ -1,13 +1,12 @@
 package com.eric.impl
 
-import akka.actor.{Actor, Props}
-import akka.pattern.pipe
-import akka.util.Timeout
-
-import com.eric.{ DatabaseActor, QueryActor }
-import com.eric.common._
 import scala.util.Try
-import com.eric.common.{ DBOperations }
+
+import akka.actor.{Actor, Props}
+//import akka.pattern.pipe
+import akka.util.Timeout
+import com.eric.{DatabaseActor, QueryActor}
+import com.eric.common._
 
 
 
@@ -30,10 +29,8 @@ class CacheManager(cache: Map[Int, CacheServer], flushSize: Int, batchSize: Int)
 
   val dirtyQueue = "dirtyqueue"
 
-
-//  private def setDirty(vs: Seq[String], db: Int) = Try(cache(0).smset(dirtyQueue, vs.map(v => s"$db::$v")))
-//  private def setDirty(v: String, db: Int) = Try(cache(0).sset(dirtyQueue, s"$db::$v"))
-  private def setDirty(v: String, db: Int) = ???
+  private def setDirty(vs: Seq[String], db: Int) = Try(cache(0).smset(dirtyQueue, vs.map(v => s"$db::$v")))
+  private def setDirty(v: String, db: Int) = Try(cache(0).sset(dirtyQueue, s"$db::$v"))
 
   private def get(k: String, db: Int) =
     sender() ! CachedValue(Try(cache(db).get(k)).toOption.getOrElse(""))

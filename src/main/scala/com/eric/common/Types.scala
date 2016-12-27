@@ -1,5 +1,8 @@
 package com.eric.common
 
+import com.eric.common.ReturnCode.InvalidBindVariables
+import com.eric.common.types.UserType
+
 /**
   * Created by kinch on 12/22/16.
   */
@@ -23,4 +26,31 @@ trait Types {
     case Some(x) => x._3 == Datatype.DATE_TYPE
     case None => false
   }
+
+  // Given a map of key/value pairs, generate an array of bind variables
+  def binds(kvs: Map[String, String]): Either[Failed, Seq[BindValue]] = {
+    val input = kvs.toSeq.map(kv => (kv._1.toLowerCase(), kv._2))
+    input.find(kv => attrMap.get(kv._1).isEmpty) match {
+      case Some(v) => Left(ReturnCode.report(InvalidBindVariables, v._1))
+      case None =>
+        Right(input.map {case (k, v) =>
+          attrMap(k) match {
+            case (_, colname, dt) => BindValue.bind(colname, dt, v)
+          }
+        })
+    }
+  }
+
+  def project(ans: Seq[String], kvs: Map[String, String]): Seq[(String, Int, String)] =
+    ans.map(_.toLowerCase()).map(an => (an, attrs.find(_._1 == an))).flatMap {
+      case (_, None) => None
+      case (n, Some(attr)) => Some((n, attr._3, kvs.getOrElse(n, "")))
+    }
+}
+
+object Types {
+  val allTypes = Seq(UserType)
+  val mp: Map[String, Types] = allTypes.map(t => (t.tn, t)).toMap
+  def get(tn: String) = mp.get(tn.toLowerCase())
+  def getType(tn: String) = get(tn).get
 }

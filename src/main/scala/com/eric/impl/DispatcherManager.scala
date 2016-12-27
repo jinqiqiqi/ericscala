@@ -2,7 +2,8 @@ package com.eric.impl
 
 import akka.actor.{ Actor, Props }
 import com.eric._
-import com.eric.common._
+import com.eric.common.GetUser
+
 
 /**
  * Created by kinch on 12/20/16.
@@ -10,7 +11,7 @@ import com.eric.common._
 
 case class DispatcherManager() extends Actor {
   val userManager = context.system.actorSelection(UserActor.actorPath)
-//  val cacheManager = context.system.actorSelection(CacheActor.actorPath)
+  val cacheManager = context.system.actorSelection(CacheActor.actorPath)
 
   def receive = {
     // user related messages

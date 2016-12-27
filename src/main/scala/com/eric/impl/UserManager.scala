@@ -1,14 +1,16 @@
 package com.eric.impl
 
 
+import com.eric.common.{ CacheActorWrapper, GetUser, QueryActorWrapper, Response }
+import com.eric.impl.user.UserAttrs
 import scala.concurrent.Future
 
 import akka.actor.{Actor, Props}
 import akka.pattern._
 import akka.util.Timeout
 import com.eric._
-import com.eric.common._
-import com.eric.impl.user.UserAttrs
+
+
 
 class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
 

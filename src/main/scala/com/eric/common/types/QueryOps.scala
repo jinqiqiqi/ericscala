@@ -1,4 +1,4 @@
-package com.eric.commom
+package com.eric.common
 
 import akka.pattern.ask
 import akka.util.Timeout

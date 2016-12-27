@@ -5,16 +5,12 @@ package com.eric.common
   */
 object Constants {
 
+
   object Attr {
-    val ID = "ID"
+    val ID = "id"
+    val USERNAME = "username"
+    val PASSWORD = "password"
+    val AGE = "age"
+    val PROVINCE = "province"
   }
-
-}
-
-object Attr {
-  val ID = "ID"
-  val USERNAME = "USERNAME"
-  val PASSWORD = "PASSWORD"
-  val AGE = "AGE"
-  val PROVINCE = "PROVINCE"
 }

@@ -10,6 +10,7 @@ trait CacheServer {
   def set(k: String, v: String, exp: Int): Boolean
 
   def sset(k: String, v: String): Boolean
+  def smset(k: String, vs: Seq[String]): Option[Long]
 }
 
 
@@ -36,6 +37,8 @@ case class RedisCache(rp: RedisClientPool) extends CacheServer {
   }
 
   def sset(k: String, v: String): Boolean = rp.withClient(r => r.sadd(k, v).getOrElse(0L) == 1)
+
+  def smset(k: String, vs: Seq[String]) = rp.withClient(r => r.sadd(k, vs.head, vs.tail: _*))
 
   def incr(k: String, by: Int):Long = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
 
