@@ -7,8 +7,7 @@ import akka.actor.{ExtendedActorSystem, Extension, ExtensionKey}
 import akka.routing.FromConfig
 import akka.util.Timeout
 import com.eric.impl._
-import com.eric.commom.{RedisCache}
-
+import com.eric.common._
 import com.redis.RedisClientPool
 
 
@@ -29,11 +28,11 @@ class EricExt(system: ExtendedActorSystem) extends Extension {
     mysql
   }
 
-  val cacheServer = {
-    val dbcnt = config.getInt("cache.dbCount")
-    val pwd = config.getString("cache.password")
-    val hn = config.getString("cache.host")
-    val pn = config.getInt("cache.port")
+  val cacheServers = {
+    val dbcnt = config.getInt("cacheServer.dbCount")
+    val pwd = config.getString("cacheServer.password")
+    val hn = config.getString("cacheServer.host")
+    val pn = config.getInt("cacheServer.port")
     Range(0, dbcnt).map { idx =>
       (idx, RedisCache(new RedisClientPool(host = hn, port = pn, database = idx, secret = if(pwd.isEmpty()) None else Some(pwd) )))
     }.toMap
@@ -51,6 +50,6 @@ class EricExt(system: ExtendedActorSystem) extends Extension {
   system.actorOf(FromConfig.props(DatabaseManager.props(batchSize)), DatabaseActor.actorName)
   system.actorOf(FromConfig.props(QueryManager.props(batchSize, fetchLimit)), QueryActor.actorName)
   system.actorOf(FromConfig.props(UserManager.props(batchSize)), UserActor.actorName)
-  system.actorOf(FromConfig.props(CacheManager.props(cacheServer, flushSize, batchSize), CacheActor.actorName))
+  system.actorOf(FromConfig.props(CacheManager.props(cacheServers, flushSize, batchSize)), CacheActor.actorName)
 }
 object Eric extends ExtensionKey[EricExt]

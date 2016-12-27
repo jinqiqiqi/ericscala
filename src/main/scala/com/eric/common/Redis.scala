@@ -1,12 +1,15 @@
 package com.eric.common
 
-import com.redis.{ RedisClient, RedisClientPool }
+import com.redis.{RedisClient, RedisClientPool}
+
 
 trait CacheServer {
   def exists(k: String): Boolean
   def get(k: String): String
   def mget(ks: Seq[String]): Seq[String]
   def set(k: String, v: String, exp: Int): Boolean
+
+  def sset(k: String, v: String): Boolean
 }
 
 
@@ -31,6 +34,8 @@ case class RedisCache(rp: RedisClientPool) extends CacheServer {
     case 0 => rp.withClient { r => r.set(k, v) }
     case _ => rp.withClient { r => r.setex(k, exp.toLong, v) }
   }
+
+  def sset(k: String, v: String)
 
   def incr(k: String, by: Int):Long = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
 

@@ -15,3 +15,7 @@ case class ValueLists(vss: Seq[Map[String, String]]) extends Response
 
 case class ReturnID(eid: Long) extends Response
 
+
+
+// cache stuff
+case class CachedValue(v: String) extends Response

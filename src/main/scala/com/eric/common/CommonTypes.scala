@@ -48,6 +48,7 @@ case class QueryActorWrapper(actor: ActorSelection)
 case class CacheActorWrapper(actor: ActorSelection)
 case class DBActorWrapper(actor: ActorSelection, batchSize: Int)
 
+
 case class AttrSpec(attrname: String, colname: String, dt: Int)
 
 // case classes for models, an entity type
