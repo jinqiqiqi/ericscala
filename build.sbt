@@ -19,7 +19,7 @@ resolvers ++= Seq(
 resolvers += Resolver.url("Typesafe Repository (ivy)", url("http://repo.typesafe.com/typesafe/release/"))(Resolver.ivyStylePatterns)
 
 libraryDependencies ++= {
-  val akkaVersion = "2.3.6"
+  val akkaVersion = "2.3.4"
   val sprayVersion = "1.3.1"
   var testVersion = "3.0.1"
   Seq(

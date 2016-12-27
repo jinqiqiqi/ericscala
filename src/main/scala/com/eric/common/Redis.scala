@@ -29,10 +29,10 @@ case class RedisCache(rp: RedisClientPool) extends CacheServer {
 
   def set(k: String, v: String, exp: Int): Boolean = exp match {
     case 0 => rp.withClient { r => r.set(k, v) }
-    case _ => rp.withClient { r => r.setex(k, exp, v) }
+    case _ => rp.withClient { r => r.setex(k, exp.toLong, v) }
   }
 
-  def incr(k: String, by: Int) = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
+  def incr(k: String, by: Int):Long = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
 
 
 }
