@@ -5,8 +5,9 @@ trait Response
 // request result case class
 case class Failed(code: Int, msg: String) extends Response
 
-// data case class
+// User staff
 case class User(uid: Long, nickname: String) extends Response
+case class UserProfile(uid: Long, profile: Map[String, String]) extends Response
 
 // data type case class
 case class ValueList(vs: Map[String, String]) extends Response
@@ -19,3 +20,5 @@ case class ReturnID(eid: Long) extends Response
 
 // cache stuff
 case class CachedValue(v: String) extends Response
+case class CachedValues(vs: Seq[String]) extends Response
+case class CachedBoolean(v: Boolean) extends Response

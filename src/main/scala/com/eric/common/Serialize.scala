@@ -9,4 +9,8 @@ object Serialize extends DefaultJsonProtocol {
   implicit val failed = jsonFormat2(Failed.apply)
   implicit val valuelists = jsonFormat1(ValueLists.apply)  
   implicit val returnid = jsonFormat1(ReturnID.apply)
+
+  // user staff
+  implicit val userprofile = jsonFormat2(UserProfile.apply)
+  implicit val login = jsonFormat1(Login.apply)
 }

@@ -8,6 +8,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.eric.DispatcherActor
 import com.eric.common._
+import com.eric.common.Constants._
 import spray.http.StatusCodes
 import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling.ToResponseMarshallable
@@ -36,7 +37,11 @@ trait Endpoints {
     }
     get {
       path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[ValueLists](p)))
+    } ~
+    post {
+      path("login")(entity(as[Login])(p => blocking[UserProfile](p)))
     }
+
   }
 
 }

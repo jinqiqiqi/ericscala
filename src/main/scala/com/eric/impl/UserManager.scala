@@ -1,10 +1,10 @@
 package com.eric.impl
 
 
-import com.eric.common.{ CacheActorWrapper, GetUser, QueryActorWrapper, Response }
+import com.eric.common._
 import com.eric.impl.user.UserAttrs
-import scala.concurrent.Future
 
+import scala.concurrent.Future
 import akka.actor.{Actor, Props}
 import akka.pattern._
 import akka.util.Timeout
@@ -23,6 +23,15 @@ class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
 
   def receive = {
     case GetUser(uid) => getUser(uid).pipeTo(sender())
+    case Login(uid) => login(uid).pipeTo(sender())
+  }
+
+  def login(uid: Long): Future[Response] = {
+    // KeyType.pin(UserStats(uid), LatestChatsVisitedBy(uid), UsersReferredBy(uid), LatestTopicsReferredTo(uid), ReferToCount(uid), ReferToFloor(uid), BookmarkTopicByUser(uid))
+
+    // MostSigninsPerUserDaily.zincr(uid)
+    // MostSigninsPerUserMonthly.zincr(uid)
+    userAttrs.profile(uid)
   }
 
   def getUser(uid: Long): Future[Response] = {

@@ -5,10 +5,6 @@ import akka.util.Timeout
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-
-
-
-
 case class DBOperations(implicit ec: ExecutionContext, to: Timeout, db: DBActorWrapper) {
 
   def load(tbl: String, eids: Seq[Long], attrs: Seq[AttrSpec]): Future[Response] = {

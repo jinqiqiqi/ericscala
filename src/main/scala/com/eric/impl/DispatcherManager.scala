@@ -2,7 +2,7 @@ package com.eric.impl
 
 import akka.actor.{ Actor, Props }
 import com.eric._
-import com.eric.common.GetUser
+import com.eric.common._
 
 
 /**
@@ -16,6 +16,8 @@ case class DispatcherManager() extends Actor {
   def receive = {
     // user related messages
     case msg: GetUser => userManager.forward(msg)
+    case msg: Login => userManager.forward(msg)
+
   }
 }
 

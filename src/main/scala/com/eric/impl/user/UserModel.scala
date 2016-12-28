@@ -1,10 +1,9 @@
 package com.eric.impl.user
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import akka.util.Timeout
+import com.eric.common.Constants.Attr
 import com.eric.common._
-import com.eric.common.Constants._
 
 
 /**
