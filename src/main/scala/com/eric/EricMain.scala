@@ -23,6 +23,8 @@ object EricMain extends App {
 
   implicit val timeout = Timeout(config.getInt("asyncTimeout").seconds)
 
+//  system.eventStream.subscribe(EricListener(config, system), classOf[DeadLetter])
+
   val api = system.actorOf(Props(new EricListener(config, system)), "EricListener")
   IO(Http) ! Http.Bind(listener = api, interface = host, port = port)
 

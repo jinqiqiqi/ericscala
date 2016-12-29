@@ -17,15 +17,14 @@ case class DBUtil(c: Connection) extends DateUtil {
     val res = fn
     val elapse = System.nanoTime() - ts
     if(elapse > 1000000 || true)
-      log.info(s">> $sql => (${elapse.toString.dropRight(6)} ms)")
+      println(s"*]] $sql => (${elapse.toString.dropRight(6)} ms)")
     else
-      log.info(s">> $sql => 0.(${elapse.toString.dropRight(3)} ms)")
+      println(s"*]] $sql => 0.(${elapse.toString.dropRight(3)} ms)")
     res
   }
 
   private def statement[T](sql: String, fs: Int = 0)(fn: PreparedStatement => T) = {
     c.createStatement()
-    println(s">>>> $sql ]]]")
     val stmt = c.prepareStatement(sql)
     if (fs > 0) stmt.setFetchSize(fs)
     val res = fn(stmt)
