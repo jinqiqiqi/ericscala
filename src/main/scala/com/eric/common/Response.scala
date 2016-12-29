@@ -14,6 +14,7 @@ case class UserProfile(uid: Long, profile: Map[String, String]) extends Response
 case class ValueList(vs: Map[String, String]) extends Response
 
 case class ValueLists(vss: Seq[Map[String, String]]) extends Response
+case class Entities(ens: Seq[Entity]) extends Response
 
 case class ReturnID(eid: Long) extends Response
 

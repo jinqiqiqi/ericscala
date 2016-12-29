@@ -15,7 +15,11 @@ case class Query(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], s
 
 
 // database operations
+case class LoadEntity(dbTable: String, eid: Long, cols: Seq[AttrSpec])
 case class LoadEntities(dbTable: String, eids: Seq[Long], cols: Seq[AttrSpec])
+case class InsertEntity(dbTable: String, kvs: Seq[BindValue])
+case class RemoveEntity(dbTable: String, ks: Seq[BindValue])
+
 
 
 // cache operations
@@ -30,3 +34,14 @@ case class CacheExists(k: String, db: Int = 0)
 
 // Refresh redis cache entities
 case class PinCache(db: Int, ks: Seq[String], force: Boolean = true) extends Request
+
+
+// Entities cache staff
+case class GetEntity(tn: String, eid: Long) extends Request
+case class GetEntities(tn: String, eids: String) extends Request
+case class CreateEntity(tn: String, kvs: Map[String, String]) extends Request
+case class UpdateEntity(tn: String, ks: Map[String, String], vs: Map[String, String]) extends Request
+case class DeleteEntities(tn: String, ks: Map[String, String]) extends Request
+case class CreateEntities(tn: String, kvs: Seq[Map[String, String]]) extends Request
+case class DeleteAndCreate(tn: String, ks: Map[String, String], kvs: Seq[Map[String, String]]) extends Request
+case class GetEntityType(tn: String) extends Request

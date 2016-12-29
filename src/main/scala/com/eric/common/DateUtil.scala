@@ -35,4 +35,6 @@ trait DateUtil {
     else
       LocalDateTime.ofEpochSecond(seconds, 0, zoneOffset).format(sFormatter)
   }
+
+  def now = LocalDateTime.now(currentZoneId).toEpochSecond(zoneOffset)
 }

@@ -2,6 +2,8 @@ package com.eric.common
 
 import akka.actor.ActorSelection
 
+import scala.util.Try
+
 /**
   * Created by kinch on 12/21/16.
   */
@@ -50,3 +52,19 @@ case class AttrSpec(attrname: String, colname: String, dt: Int)
 
 // case classes for models, an entity type
 case class EntityType(tn: String, dbTable: String, attrs: Seq[AttrSpec]) extends Response
+
+
+case class Entity(tn: String, eid: Long, kvs: Map[String, String]) extends Response {
+  def getAttr(n: String): Option[String] = kvs.get(n)
+  def getString(n: String): String = kvs.getOrElse(n, "")
+  def getLong(n: String): Long = kvs.get(n) match {
+    case Some(v) => Try(v.toLong).toOption.getOrElse(0L)
+    case _ => 0L
+  }
+  def getTimestamp(n: String) = getLong(n)
+  def project(ans: Seq[String]) = kvs.filter(kv => ans.contains(kv._1))
+}
+
+object Entity {
+  def apply(tn: String, vs: Map[String, String]): Entity = new Entity(tn, vs(Constants.Attr.ID).toLong, vs)
+}
