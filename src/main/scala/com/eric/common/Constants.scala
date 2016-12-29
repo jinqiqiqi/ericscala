@@ -7,10 +7,21 @@ object Constants {
 
 
   object Attr {
+    val MODIFIED = "modified"
+
+    val KEY = "key"
+
+    val CACHEDB = "cache_db"
+
+    val TYPE = "type"
+
     val ID = "id"
     val USERNAME = "username"
     val PASSWORD = "password"
     val AGE = "age"
     val PROVINCE = "province"
+
+    val VALUE = "value"
+
   }
 }

@@ -7,6 +7,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 
 case object QueryOps {
+  def genbinds(sz: Int): String = List.fill(sz)("?").mkString("(", ",", ")")
 
   def query(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], start: Int = 0, range: Int = -1)
            (fn: Seq[Map[String, String]] => Future[Response])

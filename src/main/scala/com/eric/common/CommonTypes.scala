@@ -12,7 +12,7 @@ sealed trait BindValue {
 
 case class BindLong(colname: String, v: Long) extends BindValue
 case class BindInt(colname: String, v: Int) extends BindValue
-case class BIndString(colname: String, v: String) extends BindValue
+case class BindString(colname: String, v: String) extends BindValue
 case class BindBoolean(colname: String, v: Boolean) extends BindValue
 case class BindDouble(colname: String, v: Double) extends BindValue
 case class BindDate(colname: String, v: Long) extends BindValue
@@ -22,12 +22,12 @@ object BindValue {
   def bind(colname: String, dt: Int, v: String) = dt match {
     case Datatype.LONG_TYPE => BindLong(colname, v.toLong)
     case Datatype.INT_TYPE => BindInt(colname, v.toInt)
-    case Datatype.STRING_TYPE => BIndString(colname, v)
+    case Datatype.STRING_TYPE => BindString(colname, v)
     case Datatype.BOOLEAN_TYPE => BindBoolean(colname, v == "1")
     case Datatype.DOUBLE_TYPE => BindDouble(colname, v.toDouble)
     case Datatype.DATE_TYPE => BindLong(colname, v.toLong)
     case Datatype.GENDER_TYPE => BindGender(colname, v.toInt)
-    case _ => BIndString(colname, v)
+    case _ => BindString(colname, v)
   }
 }
 
