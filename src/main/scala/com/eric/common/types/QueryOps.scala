@@ -10,8 +10,7 @@ case object QueryOps {
   def genbinds(sz: Int): String = List.fill(sz)("?").mkString("(", ",", ")")
 
   def query(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], start: Int = 0, range: Int = -1)
-           (fn: Seq[Map[String, String]] => Future[Response])
-           (implicit ec: ExecutionContext, to: Timeout, qm: QueryActorWrapper): Future[Response] = {
+           (fn: Seq[Map[String, String]] => Future[Response])(implicit ec: ExecutionContext, to: Timeout, qm: QueryActorWrapper): Future[Response] = {
     (qm.actor ? Query(sql, cols, binds, start, range)).flatMap {
       case err: Failed => Future.successful(err)
       case ValueLists(vss) => fn(vss)

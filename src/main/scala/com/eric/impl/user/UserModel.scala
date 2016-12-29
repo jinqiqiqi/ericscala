@@ -1,9 +1,11 @@
 package com.eric.impl.user
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import akka.util.Timeout
-import com.eric.common.Constants.Attr
 import com.eric.common._
+import com.eric.common.Constants.Attr
+import com.eric.common.types.UserType
 
 
 /**
@@ -11,10 +13,13 @@ import com.eric.common._
   */
 case class UserAttrs(implicit qm: QueryActorWrapper, cm: CacheActorWrapper, ec: ExecutionContext, to: Timeout) {
 
-  def profile(uid: Long) = {
-    val sql = "select id, username, password, age, province from user"
-    val cols = Seq((Attr.ID, Datatype.LONG_TYPE), (Attr.USERNAME, Datatype.STRING_TYPE), (Attr.PASSWORD, Datatype.STRING_TYPE), (Attr.AGE, Datatype.INT_TYPE), (Attr.PROVINCE, Datatype.STRING_TYPE))
-    val binds = Seq.empty
-    QueryOps.query(sql, cols, binds)(vss => Future.successful(ValueLists(vss)))
+  def profile(uid: Long): Future[Response] = {
+
+    QueryOps.simpleQuery(UserType, Seq(Attr.ID, Attr.USERNAME, Attr.PASSWORD, Attr.AGE), s"id = ?", Seq(BindLong(Attr.ID, uid))){
+      case vss if vss.isEmpty => Future.successful(ReturnCode.report(ReturnCode.InvalidUserID, uid.toString))
+      case (vs :: _) =>
+        Future.successful(UserProfile(uid, vs))
+    }
+
   }
 }

@@ -41,9 +41,6 @@ object Datatype {
   val GENDER_TYPE = 7
 }
 
-class CommonTypes {
-}
-
 case class QueryActorWrapper(actor: ActorSelection)
 case class CacheActorWrapper(actor: ActorSelection)
 case class DBActorWrapper(actor: ActorSelection, batchSize: Int)

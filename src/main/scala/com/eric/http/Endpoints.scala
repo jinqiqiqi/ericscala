@@ -36,7 +36,7 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
-      path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[ValueLists](p)))
+      path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[UserProfile](p)))
     } ~
     post {
       path("login")(entity(as[Login])(p => blocking[UserProfile](p)))

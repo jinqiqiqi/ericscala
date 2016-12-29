@@ -12,21 +12,17 @@ import javax.sql.DataSource
 
 class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Transaction {
 
-  private def select(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], start: Int, range: Int): Any =
+  private def select(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], start: Int, range: Int): Response =
     query { conn =>
       val offset = if (start > 0) s"offset $start" else ""
       val limit  = if (range > 0) s"limit $range" else ""
       ValueLists(DBUtil(conn).select(s"$sql $limit $offset", cols, binds))
-      
-
     }
 
   def receive = {
     case Query(sql, cols, binds, start, range) =>
-      val msg = select(sql, cols, binds, start, range)
-      sender ! msg
+      sender ! select(sql, cols, binds, start, range)
   }
-
 }
 
 object DatabaseManager {

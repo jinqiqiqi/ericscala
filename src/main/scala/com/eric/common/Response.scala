@@ -7,6 +7,7 @@ case class Failed(code: Int, msg: String) extends Response
 
 // User staff
 case class User(uid: Long, nickname: String) extends Response
+
 case class UserProfile(uid: Long, profile: Map[String, String]) extends Response
 
 // data type case class

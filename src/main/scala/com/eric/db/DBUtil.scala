@@ -14,18 +14,18 @@ case class DBUtil(c: Connection) extends DateUtil {
 
   private def clock[T](sql: String)(fn: => T) = {
     val ts = System.nanoTime()
-    log.info(sql)
     val res = fn
     val elapse = System.nanoTime() - ts
-    if(elapse > 1000000)
-      log.info(s"(${elapse.toString.dropRight(6)} ms)")
+    if(elapse > 1000000 || true)
+      log.info(s">> $sql => (${elapse.toString.dropRight(6)} ms)")
     else
-      log.info(s"0.(${elapse.toString.dropRight(3)} ms)")
+      log.info(s">> $sql => 0.(${elapse.toString.dropRight(3)} ms)")
     res
   }
 
   private def statement[T](sql: String, fs: Int = 0)(fn: PreparedStatement => T) = {
     c.createStatement()
+    println(s">>>> $sql ]]]")
     val stmt = c.prepareStatement(sql)
     if (fs > 0) stmt.setFetchSize(fs)
     val res = fn(stmt)
@@ -34,7 +34,15 @@ case class DBUtil(c: Connection) extends DateUtil {
   }
 
   private def bind(stmt: PreparedStatement, binds: Seq[BindValue]) = {
-
+    (1 to binds.size).zip(binds) foreach {
+      case (i, BindLong(_, v)) => stmt.setLong(i, v)
+      case (i, BindInt(_, v)) => stmt.setInt(i, v)
+      case (i, BindString(_, v)) => stmt.setString(i, v)
+      case (i, BindBoolean(_, v)) => stmt.setInt(i, if(v) 1 else 0)
+      case (i, BindDouble(_, v)) => stmt.setDouble(i, v)
+      case (i, BindDate(_, v)) => stmt.setTimestamp(i, new Timestamp(v* 1000))
+      case (i, BindGender(_, v)) => stmt.setInt(i, v)
+    }
   }
 
   private def cursor[T](stmt: PreparedStatement)(fn: ResultSet => T) = {

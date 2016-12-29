@@ -24,7 +24,6 @@ object ReturnCode {
     case AccessDenied => Failed(code, s"AccessDenied ($p)")
     case ElasticIndexError => Failed(code, s"ElasticIndexError ($p)")
     case InvalidUserID => Failed(code, s"InvalidUserID ($p)")
-      
   }
 
   val DatabaseCallError = 100

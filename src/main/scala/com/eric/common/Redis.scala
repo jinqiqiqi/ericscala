@@ -1,6 +1,6 @@
 package com.eric.common
 
-import com.redis.{ RedisClient, RedisClientPool }
+import com.redis.{RedisClient, RedisClientPool}
 
 
 trait CacheServer {
@@ -42,22 +42,22 @@ case class RedisCache(rp: RedisClientPool) extends CacheServer {
 
   def sset(k: String, v: String): Boolean = rp.withClient(r => r.sadd(k, v).getOrElse(0L) == 1)
 
-  def smset(k: String, vs: Seq[String]) = rp.withClient(r => r.sadd(k, vs.head, vs.tail: _*))
+  def smset(k: String, vs: Seq[String]): Option[Long] = rp.withClient(r => r.sadd(k, vs.head, vs.tail: _*))
 
-  def incr(k: String, by: Int):Long = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
+  def incr(k: String, by: Int): Long = rp.withClient { r => r.incrby(k, by).getOrElse(0) }
 
-  def hmset(k: String, vs: Seq[(String, Long)]) = rp.withClient { r =>
+  def hmset(k: String, vs: Seq[(String, Long)]): Boolean = rp.withClient { r =>
     r.hmset(k, vs)
   }
-  def zmset(k: String, ks: Seq[(Double, String)]) = rp.withClient { r =>
+  def zmset(k: String, ks: Seq[(Double, String)]): Long = rp.withClient { r =>
     r.zadd(k, ks.head._1, ks.head._2, ks.tail: _*).getOrElse(0L)
   }
 
-  def lpush(k: String, vs: Seq[String]) = rp.withClient { r =>
+  def lpush(k: String, vs: Seq[String]): Long = rp.withClient { r =>
     r.lpush(k, vs.head, vs.tail: _*).getOrElse(0L)
   }
 
-  def setall(tkvs: Seq[(String, String, String)]) = rp.withClient{ r =>
+  def setall(tkvs: Seq[(String, String, String)]): Unit = rp.withClient{ r =>
     val pattern = "([^-]+)-(.+)".r
     tkvs foreach { case (t, k, vs) =>
       t match {

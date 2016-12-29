@@ -7,7 +7,7 @@ import com.eric.common.Constants._
 
 case object UserType extends Types {
   val tn = "user"
-  val dbTable = "users"
+  val dbTable = "user"
   val attrs = Seq(
     (Attr.ID, Attr.ID, LONG_TYPE),
     (Attr.USERNAME, Attr.USERNAME, STRING_TYPE),
