@@ -1,7 +1,7 @@
 package com.eric.common
 
-import com.eric.common.ReturnCode.InvalidBindVariables
-import com.eric.common.types.UserType
+import com.eric.common.ReturnCode._
+import com.eric.common.types._
 
 /**
   * Created by kinch on 12/22/16.
@@ -14,11 +14,11 @@ trait Types {
   def primary: String = Constants.Attr.ID
 
   def attrs: Seq[(String, String, Int)]
-  def attrMap = attrs.map(x => (x._1, x)).toMap
+  def attrMap: Map[String, (String, String, Int)] = attrs.map(x => (x._1, x)).toMap
   def attrnames: Seq[String] = attrs.map(_._1)
   def colsnames: Seq[String] = attrs.map(_._2)
 
-  def et = EntityType(tn, dbTable, attrs.map {
+  def et: EntityType = EntityType(tn, dbTable, attrs.map {
     case (an, cn, dt) => AttrSpec(an, cn, dt)
   })
 
@@ -49,8 +49,8 @@ trait Types {
 }
 
 object Types {
-  val allTypes = Seq(UserType)
+  val allTypes = Seq(UserType, KeyValueType)
   val mp: Map[String, Types] = allTypes.map(t => (t.tn, t)).toMap
-  def get(tn: String) = mp.get(tn.toLowerCase())
-  def getType(tn: String) = get(tn).get
+  def get(tn: String): Option[Types] = mp.get(tn.toLowerCase())
+  def getType(tn: String): Types = get(tn).get
 }

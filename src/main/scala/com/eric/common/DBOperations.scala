@@ -6,7 +6,17 @@ import akka.util.Timeout
 import scala.concurrent.{ ExecutionContext, Future }
 
 case class DBOperations(implicit ec: ExecutionContext, to: Timeout, db: DBActorWrapper) {
+
   def insert(tbl: String, vs: Seq[BindValue]): Future[Response] = (db.actor ? InsertEntity(tbl, vs)).mapTo[Response]
+
+  def minsert(tbl: String, kvs: Seq[Seq[BindValue]]): Future[Response] = kvs match {
+    case x if x.isEmpty => Future.successful(ReturnID(0L))
+    case _ =>
+      val fs = kvs.grouped(db.batchSize).map { chunk =>
+        (db.actor ? InsertEntities(tbl, chunk)).mapTo[Response]
+      }
+      Future.sequence(fs).map(res => errorOrElse[ReturnID](res.toSeq)(_.head))
+  }
 
 
   def load(tbl: String, eids: Seq[Long], attrs: Seq[AttrSpec]): Future[Response] = {
@@ -31,5 +41,12 @@ case class DBOperations(implicit ec: ExecutionContext, to: Timeout, db: DBActorW
       case res: ReturnID => fn(res)
     }
 
+  def delete(tbl: String, ks: Seq[BindValue])(fn: ReturnID => Future[Response]): Future[Response] =
+    (db.actor ? RemoveEntity(tbl, ks)) flatMap {
+      case err: Failed => Future.successful(err)
+      case res: ReturnID => fn(res)
+    }
+
+  
 }
 

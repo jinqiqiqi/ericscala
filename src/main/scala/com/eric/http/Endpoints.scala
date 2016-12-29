@@ -8,7 +8,6 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.eric.DispatcherActor
 import com.eric.common._
-import com.eric.common.Constants._
 import spray.http.StatusCodes
 import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling.ToResponseMarshallable
@@ -20,7 +19,7 @@ import spray.routing.Route
  * Created by kinch on 12/20/16.
  */
 trait Endpoints {
-  import Serialize._
+  import com.eric.common.Serialize._
 
   def routes(system: ActorSystem)(implicit timeout: Timeout, ec: ExecutionContext): Route = {
     val dispatcher = system.actorSelection(DispatcherActor.actorPath)

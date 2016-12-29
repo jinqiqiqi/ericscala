@@ -19,6 +19,7 @@ case class LoadEntity(dbTable: String, eid: Long, cols: Seq[AttrSpec])
 case class LoadEntities(dbTable: String, eids: Seq[Long], cols: Seq[AttrSpec])
 case class InsertEntity(dbTable: String, kvs: Seq[BindValue])
 case class RemoveEntity(dbTable: String, ks: Seq[BindValue])
+case class InsertEntities(dbTable: String, kvs: Seq[Seq[BindValue]])
 
 
 

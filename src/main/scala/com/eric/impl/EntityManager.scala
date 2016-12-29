@@ -61,11 +61,32 @@ case class EntityManager(batchSize: Int)(implicit to: Timeout) extends Actor wit
     }
   }
 
-  private def delete(tn: String, eids: Map[String, String]) = ???
+  private def delete(tn: String, ks: Map[String, String]): Future[Response] = get(tn) { t =>
+    t.binds(ks) match {
+      case Left(err) => Future.successful(err)
+      case Right(binds) => database.delete(t.dbTable, binds) { res =>
+        // Remove entity cache if the primary key is given
+        ks.collectFirst {
+          case (k, v) if k == t.primary => ecache.evict(t.tn, v.toLong) 
+        }
+        Future.successful(res)
+      }
+    }
+  }
 
-  private def mcreate(tn: String, kvs: Seq[Map[String, String]]) = ???
+  private def mcreate(tn: String, kvs: Seq[Map[String, String]]) = get(tn){t =>
+    val binds = kvs.map { vs => t.binds(createTime(t, vs)) }
+    binds.find(_.isLeft) match {
+      case Some(err) => Future.successful(err.left.get)
+      case _ => database.minsert(t.dbTable, binds.map(_.right.get))
+    }
+  }
 
-  private def deleteNCreate(tn: String, ks: Map[String, String], kvs: Seq[Map[String, String]]) = ???
+  private def deleteNCreate(tn: String, ks: Map[String, String], kvs: Seq[Map[String, String]]) =
+    delete(tn, ks).flatMap {
+      case err: Failed => Future.successful(err)
+      case _ => mcreate(tn, kvs)
+    }
 
   private def getType(tn: String) = get(tn)(t => Future.successful(t.et))
 

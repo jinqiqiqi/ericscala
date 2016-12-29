@@ -3,10 +3,10 @@ package com.eric.impl
 import scala.concurrent.Future
 import scala.util.Try
 
-import akka.actor.{ Actor, Props }
+import akka.actor.{Actor, Props}
 import akka.pattern.pipe
 import akka.util.Timeout
-import com.eric.{ DatabaseActor, QueryActor }
+import com.eric.{DatabaseActor, QueryActor}
 import com.eric.common._
 import com.eric.common.Constants.Attr
 import com.eric.common.types.KeyValueType

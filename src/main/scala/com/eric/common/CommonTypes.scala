@@ -43,6 +43,7 @@ object Datatype {
   val GENDER_TYPE = 7
 }
 
+case class EntityActorWrapper(actor: ActorSelection)
 case class QueryActorWrapper(actor: ActorSelection)
 case class CacheActorWrapper(actor: ActorSelection)
 case class DBActorWrapper(actor: ActorSelection, batchSize: Int)
