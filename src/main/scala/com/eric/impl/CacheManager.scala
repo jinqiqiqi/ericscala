@@ -34,6 +34,7 @@ class CacheManager(cache: Map[Int, CacheServer], flushSize: Int, batchSize: Int)
     (if (force) keys else keys.filterNot(k => cache(db).exists(k))) match {
       case ks if ks.isEmpty => Future.successful(ReturnID(keys.size))
       case ks =>
+        println(s"---- $db, $keys, $force")
         val cols = Seq(Attr.KEY, Attr.CACHEDB, Attr.TYPE, Attr.VALUE)
         val kbinds = ks.map(k => BindString("", k))
         val (where, binds) = (db == -1, ks.isEmpty) match {
@@ -57,6 +58,7 @@ class CacheManager(cache: Map[Int, CacheServer], flushSize: Int, batchSize: Int)
         }
 
         QueryOps.simpleQuery(KeyValueType, cols, where, binds, 0, -1) { vss =>
+          println(s">>>>>>>>>>>>   $vss, $where, $binds")
           if (vss.nonEmpty)
             removeExpired(vss).map(vs => (vs(Attr.CACHEDB), vs(Attr.TYPE), vs(Attr.KEY), vs(Attr.VALUE))).groupBy(_._1).foreach {
               case (cdb, tkvs) =>

@@ -31,7 +31,11 @@ case class CacheMSet(kvs: Seq[(String, String)], db: Int = 0)
 case class CacheIncr(k: String, by: Int, db: Int = 0)
 case class CacheRemove(ks: Seq[String], db: Int = 0)
 case class CacheExists(k: String, db: Int = 0)
-
+case class CacheHMSet(k: String, vs: Seq[(String, Long)], db: Int = 0)
+case class CacheHMGet(k: String, vs: Seq[String], db: Int = 0)
+case class CacheHIncr(k: String, f: String, by: Int = 1, exp: Int = 0, db: Int = 0)
+case class CacheHDel(k: String, f: String, db: Int = 0)
+case class CacheHGetAll(k: String, db: Int = 0)
 
 // Refresh redis cache entities
 case class PinCache(db: Int, ks: Seq[String], force: Boolean = true) extends Request

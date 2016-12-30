@@ -17,9 +17,15 @@ trait KeyType extends BaseType {
 
 object KeyType {
   def pin(ks: KeyType*)(implicit cm: CacheActorWrapper, ec: ExecutionContext, to: Timeout): Future[Boolean] = {
-    val fs = ks.groupBy(_.db).map {
-      case (db, keys) => cm.actor ? PinCache(db, keys.flatMap(_.allKeys), force = false)
+    val fs = ks.groupBy(_.db) map {
+
+      case (db, keys) => {
+        cm.actor ? PinCache(db, keys.flatMap(_.allKeys), force = false)
+      }
+
     }
+
+
     Future.sequence(fs).map(_ => true)
   }
 }

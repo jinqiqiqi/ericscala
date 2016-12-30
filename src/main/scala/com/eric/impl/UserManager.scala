@@ -2,6 +2,7 @@ package com.eric.impl
 
 
 import com.eric.common._
+import com.eric.common.cache.{ KeyType, UserStats }
 import com.eric.impl.user.UserAttrs
 
 import scala.concurrent.Future
@@ -27,15 +28,15 @@ class UserManager(batchSize: Int)(implicit to: Timeout) extends Actor {
   }
 
   def login(uid: Long): Future[Response] = {
-    // KeyType.pin(UserStats(uid), LatestChatsVisitedBy(uid), UsersReferredBy(uid), LatestTopicsReferredTo(uid), ReferToCount(uid), ReferToFloor(uid), BookmarkTopicByUser(uid))
-
-    // MostSigninsPerUserDaily.zincr(uid)
-    // MostSigninsPerUserMonthly.zincr(uid)
-    userAttrs.profile(uid)
+    KeyType.pin(UserStats(uid)) flatMap { _ =>
+      userAttrs.profile(uid)
+    }
   }
 
   def getUser(uid: Long): Future[Response] = {
-    userAttrs.profile(uid)
+    KeyType.pin(UserStats(uid)) flatMap { _ =>
+      userAttrs.profile(uid)
+    }
   }
 
 

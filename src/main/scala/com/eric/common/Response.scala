@@ -24,3 +24,4 @@ case class ReturnID(eid: Long) extends Response
 case class CachedValue(v: String) extends Response
 case class CachedValues(vs: Seq[String]) extends Response
 case class CachedBoolean(v: Boolean) extends Response
+case class CachedHValues(vs: Map[String, Long]) extends Response
