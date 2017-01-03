@@ -33,3 +33,8 @@ case object QueryActor extends Actors {
   val name = "QUERY"
   val actorName = "QueryManager"
 }
+
+case object EntityActor extends Actors {
+  val name = "ENTITY"
+  val actorName = "EntityManager"
+}

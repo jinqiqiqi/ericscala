@@ -1,6 +1,6 @@
 package com.eric.impl
 
-import akka.actor.Actor
+import akka.actor.{Actor, Props}
 import akka.pattern.pipe
 import akka.util.Timeout
 import com.eric.common.Constants.Attr
@@ -106,4 +106,8 @@ case class EntityManager(batchSize: Int)(implicit to: Timeout) extends Actor wit
     case GetEntityType(tn) => getType(tn).pipeTo(sender())
   }
 
+}
+
+object EntityManager {
+  def props(batchSize: Int)(implicit to: Timeout) = Props { new EntityManager(batchSize) }
 }

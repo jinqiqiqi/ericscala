@@ -35,11 +35,17 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
+      path("entity")(parameters('tn, 'eid.as[Long]).as(GetEntity)(p => blocking[Entity](p))) ~
       path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[UserProfile](p)))
-    } ~
-    post {
-      path("login")(entity(as[Login])(p => blocking[UserProfile](p)))
     }
+
+    /*
+    ~
+
+    post {
+       path("login")(entity(as[Login])(p => blocking[UserProfile](p)))
+    }
+    */
 
   }
 

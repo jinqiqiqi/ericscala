@@ -51,5 +51,6 @@ class EricExt(system: ExtendedActorSystem) extends Extension {
   system.actorOf(FromConfig.props(QueryManager.props(batchSize, fetchLimit)), QueryActor.actorName)
   system.actorOf(FromConfig.props(UserManager.props(batchSize)), UserActor.actorName)
   system.actorOf(FromConfig.props(CacheManager.props(cacheServers, flushSize, batchSize)), CacheActor.actorName)
+  system.actorOf(FromConfig.props(EntityManager.props(batchSize)), EntityActor.actorName)
 }
 object Eric extends ExtensionKey[EricExt]

@@ -9,6 +9,20 @@ import org.slf4j.LoggerFactory
   * Created by kinch on 12/21/16.
   */
 case class DBUtil(c: Connection) extends DateUtil {
+  def load1(tbl: String, attrs: Seq[AttrSpec], pk: String, eid: BindLong) = {
+    val sql = s"SELECT ${attrs.map(_.colname).mkString(", ")} FROM $tbl WHERE $pk = ?"
+    clock(sql) {
+      statement(sql) { stmt =>
+        bind(stmt, List(eid))
+        fetchRows(stmt, attrs.map(c => (c.attrname, c.dt))) match {
+          case x if x.isEmpty => Map.empty[String, String]
+          case (h :: _) => h
+        }
+      }
+    }
+
+  }
+
 
   private val log = LoggerFactory.getLogger(this.getClass)
 

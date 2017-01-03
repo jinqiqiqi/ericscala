@@ -17,6 +17,7 @@ object Constants {
     val PROVINCE = "province"
     val VALUE = "value"
     val CREATED = "created"
+    val DELETE = "delete"
   }
 
   object Gender {

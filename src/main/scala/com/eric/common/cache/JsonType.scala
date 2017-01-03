@@ -7,7 +7,7 @@ import com.eric.common.{CacheActorWrapper, Entity}
 import scala.concurrent.{ExecutionContext, Future}
 
 import com.eric.common._
-import Serialize.entitybody
+import Serialize.entity
 
 /**
   * Created by kinch on 12/29/16.

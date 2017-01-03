@@ -12,11 +12,13 @@ import com.eric.common._
 case class DispatcherManager() extends Actor {
   val userManager = context.system.actorSelection(UserActor.actorPath)
   val cacheManager = context.system.actorSelection(CacheActor.actorPath)
+  val entityManager = context.system.actorSelection(EntityActor.actorPath)
 
   def receive = {
     // user related messages
     case msg: GetUser => userManager.forward(msg)
     case msg: Login => userManager.forward(msg)
+    case msg: GetEntity => entityManager.forward(msg)
 
   }
 }

@@ -4,6 +4,7 @@ package com.eric.common
   * Created by kinch on 12/21/16.
   */
 object ReturnCode {
+  def report(code: Int, p: Long): Failed = report(code, p.toString)
   def report(code: Int, p: String): Failed = code match {
     case DatabaseCallError => Failed(code, s"Database Call Error ($p)")
     case ObjectNotFound => Failed(code, s"Object Not Found ($p)")

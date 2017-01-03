@@ -15,11 +15,11 @@ case class Query(sql: String, cols: Seq[(String, Int)], binds: Seq[BindValue], s
 
 
 // database operations
-case class LoadEntity(dbTable: String, eid: Long, cols: Seq[AttrSpec])
-case class LoadEntities(dbTable: String, eids: Seq[Long], cols: Seq[AttrSpec])
-case class InsertEntity(dbTable: String, kvs: Seq[BindValue])
-case class RemoveEntity(dbTable: String, ks: Seq[BindValue])
-case class InsertEntities(dbTable: String, kvs: Seq[Seq[BindValue]])
+case class LoadEntity(dbTable: String, eid: Long, cols: Seq[AttrSpec]) extends Request
+case class LoadEntities(dbTable: String, eids: Seq[Long], cols: Seq[AttrSpec]) extends Request
+case class InsertEntity(dbTable: String, kvs: Seq[BindValue]) extends Request
+case class RemoveEntity(dbTable: String, ks: Seq[BindValue]) extends Request
+case class InsertEntities(dbTable: String, kvs: Seq[Seq[BindValue]]) extends Request
 
 
 

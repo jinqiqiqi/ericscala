@@ -1,11 +1,11 @@
 package com.eric.common
 
-import com.eric.common.Constants.Gender
 import scala.concurrent.{ExecutionContext, Future}
 
 import akka.pattern.ask
 import akka.util.Timeout
-
+import com.eric.common.Constants.Attr._
+import com.eric.common.Constants.Gender
 
 
 abstract class EntityOperations(implicit ec: ExecutionContext, to: Timeout, em: EntityActorWrapper, cm: CacheActorWrapper) extends DateUtil {
@@ -75,5 +75,54 @@ abstract class EntityOperations(implicit ec: ExecutionContext, to: Timeout, em: 
       case err: Failed => Future.successful(err)
       case en: Entity => fn(en)
     }
-  
+
+  def mget(eids: Seq[Long])(fn: Entities => Future[Response]): Future[Response] =
+    if(eids.isEmpty) fn(Entities(Seq.empty))
+    else (em.actor ? GetEntities(t.tn, eids.mkString(","))).flatMap {
+      case err: Failed => Future.successful(err)
+      case ens: Entities => fn(ens)
+    }
+
+  def create(vs: Map[String, String])(fn: Long => Future[Response]): Future[Response] =
+    (em.actor ? CreateEntity(t.tn, vs)).flatMap {
+      case err: Failed => Future.successful(err)
+      case ReturnID(eid) => fn(eid)
+    }
+
+  def mcreate(vss: Seq[Map[String, String]])(fn: Seq[Long] => Future[Response]): Future[Response] =
+    (em.actor ? CreateEntities(t.tn, vss)).flatMap {
+      case err: Failed => Future.successful(err)
+      case ReturnID(first) => fn(vss.indices.map(id => first + id))
+    }
+
+  def update(eid: Long, vs: Map[String, String])(fn: => Future[Response]): Future[Response] =
+    (em.actor ? UpdateEntity(t.tn, Map(ID -> eid.toString), vs)).flatMap {
+      case err: Failed => Future.successful(err)
+      case _ => fn
+    }
+
+  private def setDeleteFlag(eids: Seq[Long], flag: String)(fn: => Future[Response]): Future[Response] =
+    Future.sequence(eids.map(eid => (em.actor ? UpdateEntity(t.tn, Map(ID -> eid.toString()), Map(DELETE -> flag))).mapTo[Response])).flatMap { res => 
+      res.find(_.isInstanceOf[Failed]) match {
+        case Some(err) => Future.successful(err)
+        case _ => fn
+      }
+    }
+
+  def delete(eids: Seq[Long])(fn: => Future[Response]): Future[Response] =
+    setDeleteFlag(eids, "1")(fn)
+
+  def undelete(eids: Seq[Long])(fn: => Future[Response]): Future[Response] =
+    setDeleteFlag(eids, "0")(fn)
+
+  def hardDelete(eid: Long)(fn: => Future[Response]): Future[Response] =
+    (em.actor ? DeleteEntities(t.tn, Map(ID -> eid.toString()))).flatMap {
+      case err: Failed => Future.successful(err)
+      case _ => fn
+    }
+
+
+
+
+
 }

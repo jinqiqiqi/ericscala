@@ -1,9 +1,10 @@
 package com.eric.common
 
+import scala.concurrent.{ExecutionContext, Future}
+
 import akka.pattern.ask
 import akka.util.Timeout
 import com.eric.common._
-import scala.concurrent.{ ExecutionContext, Future }
 
 
 case object QueryOps {
