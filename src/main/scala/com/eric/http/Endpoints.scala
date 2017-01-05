@@ -1,5 +1,6 @@
 package com.eric.http
 
+
 import scala.concurrent.ExecutionContext
 import scala.reflect.ClassTag
 
@@ -35,8 +36,10 @@ trait Endpoints {
       complete(StatusCodes.OK)
     }
     get {
-      path("entity")(parameters('tn, 'eid.as[Long]).as(GetEntity)(p => blocking[Entity](p))) ~
-      path("user")(parameters('uid.as[Int] ? 1).as(GetUser)(p => blocking[UserProfile](p)))
+      path("e")(parameters('t.as[String], 'id.as[Long]).as(GetEntity)(p => blocking[Entity](p))) ~
+      path("es")(parameters('t.as[String], 'ids.as[String]).as(GetEntities)(p => blocking[Entities](p))) ~
+      path("user")(parameters('id.as[Int] ? 1).as(GetUser)(p => blocking[UserProfile](p)))
+      
     }
 
     /*

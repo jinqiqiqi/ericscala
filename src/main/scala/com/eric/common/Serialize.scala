@@ -12,6 +12,7 @@ object Serialize extends DefaultJsonProtocol {
 
 
   implicit val entity = jsonFormat3(Entity.apply)
+  implicit val entities = jsonFormat1(Entities.apply)
 
   // user staff
   implicit val userprofile = jsonFormat2(UserProfile.apply)

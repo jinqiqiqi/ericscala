@@ -30,9 +30,14 @@ class DatabaseManager(fs: Int)(implicit ds: DataSource) extends Actor with Trans
     }
   }
 
+  private def load(tbl: String, eids: Seq[Long], attrs: Seq[AttrSpec]) = query { conn =>
+    ValueLists(DBUtil(conn).load(tbl, attrs, primary, eids.map(eid => BindLong(primary, eid))))
+  }
+
   def receive = {
     case Query(sql, cols, binds, start, range) => sender ! select(sql, cols, binds, start, range)
     case LoadEntity(tbl, eid, attrs) => sender ! load1(tbl, eid, attrs)
+    case LoadEntities(tbl, eids, attrs) => sender ! load(tbl, eids, attrs)
   }
 }
 

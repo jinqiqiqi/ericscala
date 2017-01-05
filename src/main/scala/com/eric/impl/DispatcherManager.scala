@@ -19,6 +19,7 @@ case class DispatcherManager() extends Actor {
     case msg: GetUser => userManager.forward(msg)
     case msg: Login => userManager.forward(msg)
     case msg: GetEntity => entityManager.forward(msg)
+    case msg: GetEntities => entityManager.forward(msg)
 
   }
 }

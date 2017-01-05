@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory
   * Created by kinch on 12/21/16.
   */
 case class DBUtil(c: Connection) extends DateUtil {
-  def load1(tbl: String, attrs: Seq[AttrSpec], pk: String, eid: BindLong) = {
+
+  private def vars(cnt: Int): String = List.fill(cnt)("?").mkString("(", ",", ")")
+
+  def load1(tbl: String, attrs: Seq[AttrSpec], pk: String, eid: BindLong): Map[String, String] = {
     val sql = s"SELECT ${attrs.map(_.colname).mkString(", ")} FROM $tbl WHERE $pk = ?"
     clock(sql) {
       statement(sql) { stmt =>
@@ -21,6 +24,16 @@ case class DBUtil(c: Connection) extends DateUtil {
       }
     }
 
+  }
+
+  def load(tbl: String, attrs: Seq[AttrSpec], pk: String, eids: Seq[BindLong]) = {
+    val sql = s"SELECT ${attrs.map(_.colname).mkString(",")} FROM $tbl WHERE $pk IN ${vars(eids.size)}"
+    clock(sql) {
+      statement(sql, eids.size) { stmt =>
+        bind(stmt, eids)
+        fetchRows(stmt, attrs.map(c => (c.attrname, c.dt)))
+      }
+    }
   }
 
 
@@ -64,6 +77,7 @@ case class DBUtil(c: Connection) extends DateUtil {
     csr.close()
     res
   }
+
 
   private def fetchRows(stmt: PreparedStatement, cols: Seq[(String, Int)]): List[Map[String, String]] = {
     cursor(stmt) { csr =>
