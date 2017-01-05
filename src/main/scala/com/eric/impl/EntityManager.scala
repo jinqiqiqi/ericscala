@@ -25,7 +25,8 @@ case class EntityManager(batchSize: Int)(implicit to: Timeout) extends Actor wit
   }
 
   private def load(tn: String, p: String): Future[Response] = get(tn) { t =>
-    ecache.load(t.tn, p.split(",").map(_.toLong).toSeq)(misses => database.load(t.dbTable, misses, t.et.attrs))
+//    ecache.load(t.tn, p.split(",").map(_.toLong).toSeq)(misses => database.load(t.dbTable, misses, t.et.attrs))
+    database.load(t.dbTable, p.split(",").map(_.toLong).toSeq, t.et.attrs)
   }
 
   private def append(t: Types, attrname: String, vs: Map[String, String]): Map[String, String] =

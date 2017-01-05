@@ -37,7 +37,7 @@ trait Endpoints {
     }
     get {
       path("e")(parameters('t.as[String], 'id.as[Long]).as(GetEntity)(p => blocking[Entity](p))) ~
-      path("es")(parameters('t.as[String], 'ids.as[String]).as(GetEntities)(p => blocking[Entities](p))) ~
+      path("es")(parameters('t.as[String], 'ids.as[String]).as(GetEntities)(p => blocking[ValueLists](p))) ~
       path("user")(parameters('id.as[Int] ? 1).as(GetUser)(p => blocking[UserProfile](p)))
       
     }
